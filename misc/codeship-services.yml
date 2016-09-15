@@ -1,0 +1,17 @@
+maven:
+  image: maven:3.3.9-jdk-8-onbuild
+  volumes:
+     - .:/usr/src/app
+  volumes_from:
+      - aws_generator
+  links:
+     - aws_generator
+
+aws_generator:
+ image: codeship/aws-ecr-dockercfg-generator
+ encrypted_env_file: aws_creds.encrypted
+ add_docker: true
+ cached: true
+ volumes:
+   - /tmp/dockercfg
+ command: "/tmp/dockercfg/maven.dockercfg"

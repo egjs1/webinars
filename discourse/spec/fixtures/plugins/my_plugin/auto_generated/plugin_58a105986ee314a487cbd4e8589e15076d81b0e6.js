@@ -1,0 +1,2 @@
+(function(){Discourse.LoginMethod.register(Discourse.LoginMethod.create({"name":"ubuntu","titleOverride":"with Ubuntu","messageOverride":"Authenticating with Ubuntu (make sure pop up blockers are not enbaled)","frameWidth":1000,"frameHeight":800}));
+})();

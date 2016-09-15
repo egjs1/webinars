@@ -1,0 +1,45 @@
+## AWS Deployment Service
+
+awsdeployment:
+  build:
+    image: codeship/aws-deployment
+    dockerfile_path: Dockerfile.aws
+  encrypted_env_file: test/aws-deployment.env.encrypted
+  environment:
+    - AWS_DEFAULT_REGION=us-east-1
+  volumes:
+    - ./:/deploy
+
+## AWS ECR Authenticator Service
+
+awspush:
+  build:
+    image: codeship/aws-ecr-dockercfg-generator
+    dockerfile_path: Dockerfile.awspush
+
+## Heroku Deployment Service
+
+herokudeployment:
+  build:
+    image: quay.io/codeship/heroku-deployment
+    dockerfile_path: Dockerfile.heroku
+  encrypted_env_file: heroku-deployment.env.encrypted
+  volumes:
+    - ./:/app
+
+## Google Cloud Deployment Service
+
+googleclouddeployment:
+build:
+  image: codeship/google-cloud-deployment
+  dockerfile: Dockerfile.google
+encrypted_env_file: test/google_deployment.env.encrypted
+add_docker: true
+volumes:
+  - ./:/deploy
+
+## Google GCR Authenticator Service
+
+gcr_dockercfg:
+image: codeship/gcr-dockercfg-generator
+encrypted_env_file: test/google_deployment.env.encrypted

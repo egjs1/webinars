@@ -1,0 +1,36 @@
+## Deploy With AWS
+
+- service: awsdeployment
+  command: /deploy/test/test_tools_available.sh
+
+- type: parallel
+  tag: staging
+  steps:
+  - service: awsdeployment
+    command: aws s3 cp /deploy/tmp/upload_to_s3.zip s3://codeship_aws_deployment_integration_test
+  - service: awsdeployment
+    command: aws s3 cp /deploy/test/upload_to_s3 s3://codeship_aws_deployment_integration_test
+
+- type: parallel
+  tag: master
+  steps:
+  - service: awsdeployment
+    command: aws s3 cp /deploy/tmp/upload_to_s3.zip s3://codeship_aws_deployment_integration_test
+  - service: awsdeployment
+    command: aws s3 cp /deploy/test/upload_to_s3 s3://codeship_aws_deployment_integration_test
+
+- service: awsdeployment
+  tag: master
+  type: push
+  image_name: codeship/aws-deployment
+  image_tag: master
+  registry: https://index.docker.io/v1/
+  encrypted_dockercfg_path: dockercfg.encrypted
+
+- service: awsdeployment
+  tag: staging
+  type: push
+  image_name: codeship/aws-deployment
+  image_tag: staging
+  registry: https://index.docker.io/v1/
+  encrypted_dockercfg_path: dockercfg.encrypted
